@@ -6,6 +6,13 @@ export async function POST(request: NextRequest) {
   try {
     const { email, password, name } = await request.json();
 
+    if (!email || !password) {
+      return NextResponse.json(
+        { error: 'Email y password son requeridos' },
+        { status: 400 }
+      );
+    }
+
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
@@ -37,9 +44,11 @@ export async function POST(request: NextRequest) {
       name: user.name,
       role: user.role,
     });
-  } catch (error) {
+  } catch (error: unknown) {
+    console.error('Error en registro:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
     return NextResponse.json(
-      { error: 'Error al crear usuario' },
+      { error: 'Error al crear usuario', details: errorMessage },
       { status: 500 }
     );
   }
