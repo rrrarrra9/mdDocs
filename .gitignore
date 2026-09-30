@@ -46,3 +46,11 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
+
+# Dependencies and generated output in nested packages
+**/node_modules/
+/mcp-server/dist/
+
+# Local editor and agent configuration
+.idea/
+.claude/settings.local.json
